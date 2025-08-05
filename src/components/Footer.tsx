@@ -36,9 +36,9 @@ export const Footer: React.FC = () => {
     };
 
     return (
-        <footer className="bg-gray-900 dark:bg-black text-white">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="grid md:grid-cols-4 gap-8">
+        <footer className="text-white bg-gray-900 dark:bg-black">
+            <div className="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div className="grid gap-8 md:grid-cols-4">
                     {/* Brand Section */}
                     <div className="md:col-span-2">
                         <motion.div
@@ -46,9 +46,9 @@ export const Footer: React.FC = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
                             viewport={{ once: true }}
-                            className="flex items-center space-x-3 mb-4"
+                            className="flex items-center mb-4 space-x-3"
                         >
-                            <div className="p-2 bg-gradient-to-r from-blue-500 to-teal-500 rounded-lg">
+                            <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500 to-teal-500">
                                 <Code className="w-6 h-6 text-white" />
                             </div>
                             <span className="text-2xl font-bold">Joshua Mutambuki</span>
@@ -58,10 +58,10 @@ export const Footer: React.FC = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.1 }}
                             viewport={{ once: true }}
-                            className="text-gray-400 leading-relaxed mb-6 max-w-md"
+                            className="max-w-md mb-6 leading-relaxed text-gray-400"
                         >
-                            A Full Stack Developer passionate about creating scalable web applications with
-                            clean code and modern design.
+                            A Full Stack Developer passionate about creating scalable web applications with clean code
+                            and modern design.
                         </motion.p>
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -76,7 +76,7 @@ export const Footer: React.FC = () => {
                                     href={link.href}
                                     target={link.href.startsWith("http") ? "_blank" : undefined}
                                     rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                                    className="p-2 bg-gray-800 dark:bg-gray-900 rounded-lg hover:bg-gray-700 dark:hover:bg-gray-800 transition-colors duration-200"
+                                    className="p-2 transition-colors duration-200 bg-gray-800 rounded-lg dark:bg-gray-900 hover:bg-gray-700 dark:hover:bg-gray-800"
                                     aria-label={link.name}
                                 >
                                     <link.icon className="w-5 h-5" />
@@ -92,7 +92,7 @@ export const Footer: React.FC = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.1 }}
                             viewport={{ once: true }}
-                            className="text-lg font-semibold mb-4"
+                            className="mb-4 text-lg font-semibold"
                         >
                             Quick Links
                         </motion.h3>
@@ -107,7 +107,7 @@ export const Footer: React.FC = () => {
                                 <button
                                     key={link.name}
                                     onClick={() => scrollToSection(link.href)}
-                                    className="block text-gray-400 hover:text-white transition-colors duration-200"
+                                    className="block text-gray-400 transition-colors duration-200 hover:text-white"
                                 >
                                     {link.name}
                                 </button>
@@ -122,7 +122,7 @@ export const Footer: React.FC = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.2 }}
                             viewport={{ once: true }}
-                            className="text-lg font-semibold mb-4"
+                            className="mb-4 text-lg font-semibold"
                         >
                             Settings
                         </motion.h3>
@@ -135,7 +135,7 @@ export const Footer: React.FC = () => {
                         >
                             <button
                                 onClick={toggleTheme}
-                                className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors duration-200"
+                                className="flex items-center space-x-2 text-gray-400 transition-colors duration-200 hover:text-white"
                             >
                                 {isDark ? (
                                     <>
@@ -150,10 +150,10 @@ export const Footer: React.FC = () => {
                                 )}
                             </button>
                             <a
-                                href="https://github.com/joshuamutambuki/portfolio"
+                                href="https://github.com/dev-m-josh/joshua-mutambuki-portfolio"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors duration-200"
+                                className="flex items-center space-x-2 text-gray-400 transition-colors duration-200 hover:text-white"
                             >
                                 <ExternalLink className="w-4 h-4" />
                                 <span>View Source</span>
@@ -168,14 +168,14 @@ export const Footer: React.FC = () => {
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 0.6, delay: 0.4 }}
                     viewport={{ once: true }}
-                    className="border-t border-gray-800 dark:border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center"
+                    className="flex flex-col items-center justify-between pt-8 mt-12 border-t border-gray-800 dark:border-gray-700 md:flex-row"
                 >
-                    <p className="text-gray-400 text-sm">
+                    <p className="text-sm text-gray-400">
                         © {currentYear} Joshua Mutambuki. Built with React, TypeScript and Tailwind CSS. Deployed on
                         Vercel.
                     </p>
-                    <div className="flex items-center space-x-4 mt-4 md:mt-0">
-                        <span className="text-gray-400 text-sm">Made with ❤️ in Kenya</span>
+                    <div className="flex items-center mt-4 space-x-4 md:mt-0">
+                        <span className="text-sm text-gray-400">Made with ❤️ in Kenya</span>
                     </div>
                 </motion.div>
             </div>
