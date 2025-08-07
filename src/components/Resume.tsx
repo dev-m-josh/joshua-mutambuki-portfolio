@@ -6,14 +6,13 @@ export const Resume: React.FC = () => {
     const experiences = [
         {
             title: "Full Stack Developer",
-            company: "Blogging Platform",
+            company: "Hotel Management System",
             period: "2025",
             location: "Personal Project",
             description: [
-                "Built a CRUD blog app using React, Node.js, and PostgreSQL",
+                "Built a CRUD Hotel Management System app using React, Node.js, and PostgreSQL",
                 "Implemented user authentication and role-based permissions",
                 "Deployed via Vercel with custom API routes",
-                "Integrated rich text editor and comment system",
             ],
             technologies: ["React", "Node.js", "PostgreSQL", "Express", "JWT"],
         },
@@ -23,12 +22,12 @@ export const Resume: React.FC = () => {
             period: "2024 - 2025",
             location: "Personal Project",
             description: [
-                "Developed a complete e-commerce solution with payment processing",
+                "Developed a complete e-commerce solution",
                 "Implemented inventory management and order tracking",
                 "Built responsive UI with modern design principles",
                 "Integrated Stripe for secure payment processing",
             ],
-            technologies: ["Next.js", "Tailwind CSS", "Stripe", "Prisma", "PostgreSQL"],
+            technologies: ["React.js", "Tailwind CSS", "Express", "PostgreSQL"],
         },
         {
             title: "Project-Based Learning",
@@ -41,7 +40,7 @@ export const Resume: React.FC = () => {
                 "Practiced Test-Driven Development and code optimization",
                 "Built responsive web applications with focus on user experience",
             ],
-            technologies: ["JavaScript", "React", "Node.js", "SQL", "Git", "Agile"],
+            technologies: ["JavaScript", "React", "Node.js", "SQL", "Git", "GitHub"],
         },
     ];
 

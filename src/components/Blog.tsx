@@ -104,7 +104,7 @@ export const Blog: React.FC = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                     viewport={{ once: true }}
-                    className="mb-16 text-center"
+                    className="mb-10 text-center"
                 >
                     <h2 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl dark:text-white">My Blog</h2>
                     <p className="max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-400">

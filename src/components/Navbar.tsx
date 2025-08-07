@@ -10,10 +10,6 @@ export const Navbar: React.FC = () => {
     const navItems = [
         { name: "Home", href: "#home" },
         { name: "About", href: "#about" },
-        { name: "Projects", href: "#projects" },
-        { name: "Resume", href: "#resume" },
-        { name: "Blog", href: "#blog" },
-        { name: "Contact", href: "#contact" },
     ];
 
     const scrollToSection = (href: string) => {
