@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Clock, Tag, Plus, Trash2 } from "lucide-react";
+import { Calendar, Clock, Tag } from "lucide-react";
 
 interface BlogPost {
     id: string;
@@ -84,9 +84,9 @@ export const Blog: React.FC = () => {
         }
     };
 
-    const handleDeletePost = (id: string) => {
-        setPosts(posts.filter((p) => p.id !== id));
-    };
+    // const handleDeletePost = (id: string) => {
+    //     setPosts(posts.filter((p) => p.id !== id));
+    // };
 
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString("en-US", {
@@ -112,7 +112,7 @@ export const Blog: React.FC = () => {
                     </p>
                 </motion.div>
 
-                <div className="flex justify-center mb-8">
+                {/* <div className="flex justify-center mb-8">
                     <button
                         onClick={() => setIsAddingPost(true)}
                         className="inline-flex items-center px-6 py-3 text-white transition-colors duration-200 bg-blue-600 rounded-lg hover:bg-blue-700"
@@ -120,7 +120,7 @@ export const Blog: React.FC = () => {
                         <Plus className="w-4 h-4 mr-2" />
                         Write New Post
                     </button>
-                </div>
+                </div> */}
 
                 {isAddingPost && (
                     <motion.div
@@ -217,7 +217,7 @@ export const Blog: React.FC = () => {
                                     <span className="px-3 py-1 text-xs font-medium text-blue-700 bg-blue-100 rounded-full dark:bg-blue-900/30 dark:text-blue-300">
                                         {post.category}
                                     </span>
-                                    <button
+                                    {/* <button
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             handleDeletePost(post.id);
@@ -225,7 +225,7 @@ export const Blog: React.FC = () => {
                                         className="p-1 text-red-500 transition-colors duration-200 rounded hover:bg-red-100 dark:hover:bg-red-900/30"
                                     >
                                         <Trash2 className="w-4 h-4" />
-                                    </button>
+                                    </button> */}
                                 </div>
 
                                 <h3 className="mb-3 text-xl font-bold leading-tight text-gray-900 dark:text-white">
