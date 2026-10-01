@@ -61,7 +61,7 @@ export const About: React.FC = () => {
                                     placeholder="Upload Profile Picture"
                                     className="w-full h-full"
                                 /> */}
-                                <img src="./Pasted image.png" alt="Profile Picture" className="w-full h-full" />
+                                <img src="./profile.png" alt="Profile Picture" className="w-full h-full br-50 rounded-full object-cover" />
                             </div>
                         </div>
                     </motion.div>

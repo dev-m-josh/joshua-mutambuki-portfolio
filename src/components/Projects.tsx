@@ -28,6 +28,28 @@ export const Projects: React.FC = () => {
             tags: ["#React", "#PostgreSQL", "#CRUD", "#Authentication"],
         },
         {
+            id: "3",
+            title: "CyberHub",
+            description:
+                "A responsive cyber-café website showcasing digital services, pricing, contact information, and easy customer access through WhatsApp and Email.",
+            stack: ["React", "TypeScript", "Tailwind CSS", "Vite"],
+            githubUrl: "https://github.com/dev-m-josh/reminder-app",
+            liveUrl: "https://reminder-app-two-phi.vercel.app/",
+            image: "cyberhub.png",
+            tags: ["#React", "#TypeScript", "#TailwindCSS", "#Vite"],
+        },
+        {
+            id: "4",
+            title: "Reminder App",
+            description:
+                "A responsive reminder application for creating and managing personal reminders with a clean and intuitive user interface.",
+            stack: ["React", "TypeScript", "Tailwind CSS", "Vite"],
+            githubUrl: "https://github.com/dev-m-josh/reminder-app",
+            liveUrl: "https://reminder-app-two-phi.vercel.app/",
+            image: "reminder.png",
+            tags: ["#React", "#TypeScript", "#TailwindCSS", "#Vite"],
+        },
+        {
             id: "2",
             title: "E-Commerce Store",
             description: "Modern e-commerce platform with payment integration and inventory management.",
