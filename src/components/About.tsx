@@ -8,7 +8,7 @@ export const About: React.FC = () => {
     const techStack = {
         Frontend: ["HTML", "CSS", "JavaScript", "React", "Tailwind CSS", "Typescript"],
         Backend: ["Node.js", "Express"],
-        Database: ["PostgreSQL", "SQL Server"],
+        Database: ["PostgreSQL", "SQL Server, Docker"],
         Tools: ["Git", "GitHub", "Vercel", "Postman", "Visual Studio Code", "Render"],
         Extras: ["Framer Motion", "React Hook Form"],
     };
