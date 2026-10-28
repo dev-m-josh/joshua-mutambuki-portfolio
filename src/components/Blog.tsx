@@ -1,320 +1,350 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Calendar, Clock, Tag } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, CalendarDays, Clock3, Code2, Tag, X } from "lucide-react";
 
 interface BlogPost {
     id: string;
     title: string;
     excerpt: string;
-    content: string;
+    content: string[];
     date: string;
     readTime: string;
     tags: string[];
     category: string;
 }
 
-export const Blog: React.FC = () => {
-    const [posts, setPosts] = useState<BlogPost[]>([
-        {
-            id: "1",
-            title: "Learning React.js API Routes",
-            excerpt: "My journey exploring React.js API routes and how they simplified my backend development process.",
-            content:
-                "React.js API routes have been a game-changer in my development workflow. They allow me to create serverless functions with ease...",
-            date: "2025-01-15",
-            readTime: "5 min read",
-            tags: ["React.js", "API", "Backend"],
-            category: "Development Tips",
-        },
-        {
-            id: "2",
-            title: "Why I Chose Self-Taught Development",
-            excerpt:
-                "Reflections on my decision to become a self-taught developer and the lessons learned along the way.",
-            content:
-                "The decision to teach myself programming was not taken lightly. It required discipline, dedication, and a lot of coffee...",
-            date: "2025-01-10",
-            readTime: "7 min read",
-            tags: ["Personal Growth", "Self-Learning", "Career"],
-            category: "Personal Growth",
-        },
-        {
-            id: "3",
-            title: "Building Scalable React Components",
-            excerpt: "Best practices for creating reusable and maintainable React components in large applications.",
-            content:
-                "When building React applications, component architecture is crucial for maintainability and scalability...",
-            date: "2025-01-08",
-            readTime: "6 min read",
-            tags: ["React", "Components", "Best Practices"],
-            category: "Development Tips",
-        },
-    ]);
+const blogPosts: BlogPost[] = [
+    {
+        id: "self-taught-web-development",
+        title: "Why I Chose Self-Taught Web Development",
+        excerpt:
+            "My journey into web development, learning through projects, and building practical skills one step at a time.",
+        content: [
+            "Choosing the self-taught path into web development has been a journey of curiosity, discipline, challenges, and continuous learning. I wanted to understand how websites and applications work, from the user interface to the backend systems that power them.",
+            "One of the biggest advantages of learning independently is the freedom to explore technologies and apply what I learn through practical projects. Instead of focusing only on theory, I work on building applications that help me understand how different parts of software fit together.",
+            "Building projects like My-Cyber has helped me put these skills into practice. Working with React, TypeScript, Node.js, Express, PostgreSQL, and other tools has taught me that developing software involves more than writing code. It requires problem-solving, debugging, planning, and learning how to build reliable features.",
+            "The journey has not always been easy. Some concepts take time to understand, and bugs often require patience and careful investigation. These challenges have taught me to break problems into smaller steps, read documentation, test solutions, and keep improving rather than give up when something doesn't work.",
+            "My goal is to continue growing as a web developer by building meaningful projects, strengthening my fundamentals, and learning from feedback and real-world development challenges.",
+            "For me, being self-taught isn't about knowing everything. It's about being willing to learn, solve problems, and keep getting better.",
+        ],
+        date: "2026-10-29",
+        readTime: "5 min read",
+        tags: ["Self-Learning", "Web Development", "Career Growth", "Problem Solving"],
+        category: "Personal Growth",
+    },
+    {
+        id: "my-cyber-full-stack",
+        title: "Building My-Cyber: Connecting the Frontend and Backend",
+        excerpt:
+            "A look at how I approached building a business management platform with React, TypeScript, Express, and PostgreSQL.",
+        content: [
+            "My-Cyber is a full-stack business management application designed to help cyber cafés and small businesses manage everyday operations. Building it gave me an opportunity to bring frontend development, backend APIs, database design, and third-party services together in one project.",
+            "On the frontend, I use React and TypeScript to build reusable interface components and keep data handling more predictable. The frontend communicates with an Express.js backend through REST APIs, separating the user interface from business logic.",
+            "PostgreSQL stores the application's structured data, while Drizzle ORM provides a typed way to work with database queries and schemas. This separation makes it easier to organize features such as product and service management, inventory tracking, and pricing.",
+            "The project has also involved practical integration work, including Cloudinary for image uploads and authentication with role-based access control. Each integration introduced its own considerations around validation, errors, and keeping the user experience clear.",
+            "My biggest takeaway is that a full-stack application is more than a collection of technologies. The API contracts, data model, validation, security, and frontend states all need to work together. Building My-Cyber has helped me practice those connections in a realistic project.",
+        ],
+        date: "2026-10-29",
+        readTime: "5 min read",
+        tags: ["React", "TypeScript", "Express.js", "PostgreSQL"],
+        category: "Projects",
+    },
+    {
+        id: "redis-email-rate-limiting",
+        title: "Using Redis to Rate-Limit Email Requests",
+        excerpt:
+            "Why limiting repeated password-reset and account-setup requests matters, and where Redis can fit into a backend.",
+        content: [
+            "Email-based account flows are useful, but they can be abused if a user or automated script repeatedly triggers them. Password-reset and account-setup endpoints should therefore have sensible limits rather than allowing an unlimited number of requests.",
+            "Redis is an in-memory data store that can support rate limiting by keeping request counters and expiration data. A rate limiter can check the relevant counter before allowing an endpoint to continue. Once a configured threshold is reached, the application can reject additional requests temporarily, commonly with HTTP 429 Too Many Requests.",
+            "For a distributed application, storing rate-limit state in Redis can be more consistent than keeping counters only in an individual server process. This is especially useful when more than one backend instance may handle requests.",
+            "The exact policy matters. Limits should be chosen for the application's needs, and the implementation should consider which identifier is counted, how windows expire, and what response is returned when the limit is exceeded. Sensitive endpoints may need more than one layer of protection.",
+            "Rate limiting is one part of protecting email workflows, not a complete security solution. It should complement input validation, safe token handling, monitoring, and clear user-facing messages. In My-Cyber, this is a practical example of using backend infrastructure to help prevent excessive email requests.",
+        ],
+        date: "2026-10-27",
+        readTime: "4 min read",
+        tags: ["Redis", "Node.js", "Security", "Rate Limiting"],
+        category: "Development Tips",
+    },
+    {
+        id: "cloudinary-image-uploads",
+        title: "Replacing Image URLs with Cloudinary Uploads",
+        excerpt:
+            "Lessons from adding file uploads, validating images, and saving hosted image URLs for products and services.",
+        content: [
+            "As a business application grows, asking someone to paste an image URL is not always the most convenient workflow. For My-Cyber, I wanted users to choose an image file when creating or updating a product or service.",
+            "The frontend sends the form fields and selected file as multipart form data. On the Express.js backend, Multer handles the incoming upload in memory and applies limits such as the maximum file size and the accepted image MIME types.",
+            "The backend then sends the file to Cloudinary and receives a secure hosted URL. The application can store that URL with the product or service record instead of storing the image bytes directly in PostgreSQL.",
+            "This flow needs validation and error handling at each step. The server should enforce file-size and file-type restrictions rather than trusting the browser alone, and it should respond clearly if the upload provider fails. The interface should also make it clear which image is selected and whether an upload succeeded.",
+            "The main lesson was to treat uploads as a complete feature rather than just a file input. A reliable experience includes frontend feedback, backend validation, cloud storage integration, and correctly associating the resulting URL with the saved record.",
+        ],
+        date: "2026-10-25",
+        readTime: "4 min read",
+        tags: ["Cloudinary", "Multer", "Express.js", "File Uploads"],
+        category: "Tutorials",
+    },
+    {
+        id: "learning-through-projects",
+        title: "What Building Projects Has Taught Me About Learning to Code",
+        excerpt:
+            "How working through real features helped me connect individual programming concepts into a complete application.",
+        content: [
+            "Learning software development involves more than understanding syntax. Concepts become clearer when I have to use them to solve a concrete problem, debug unexpected behavior, and make different parts of an application work together.",
+            "Building projects has helped me practice breaking larger requirements into smaller tasks. A feature such as uploading a product image involves a user interface, request formatting, server-side validation, an external storage service, and database updates. Thinking through each boundary makes the work easier to reason about.",
+            "Debugging has also become an important part of the process. Reading error messages, checking network requests, inspecting server logs, and testing assumptions often reveal more than simply rewriting code until it works.",
+            "I am learning to value maintainability alongside getting a feature working. Clear naming, reusable components, validation, and predictable API responses make future changes easier. Version control also helps me make changes in smaller, more manageable steps.",
+            "My approach is to keep building, document what I learn, and be honest about what I still need to improve. Each project gives me a chance to turn theory into practice and develop better habits as a software developer.",
+        ],
+        date: "2026-10-22",
+        readTime: "3 min read",
+        tags: ["Learning", "Problem Solving", "Software Development"],
+        category: "Personal Growth",
+    },
+];
 
-    const [isAddingPost, setIsAddingPost] = useState(false);
-    const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
-    const [newPost, setNewPost] = useState<Omit<BlogPost, "id" | "date">>({
-        title: "",
-        excerpt: "",
-        content: "",
-        readTime: "",
-        tags: [],
-        category: "",
+const categories = ["All", ...Array.from(new Set(blogPosts.map((post) => post.category)))];
+
+const formatDate = (dateString: string) =>
+    new Date(`${dateString}T12:00:00`).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
     });
 
-    const categories = ["Development Tips", "Personal Growth", "Problem Solving", "Tutorials"];
+export const Blog: React.FC = () => {
+    const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+    const [activeCategory, setActiveCategory] = useState("All");
+    const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-    const handleAddPost = () => {
-        if (newPost.title && newPost.excerpt && newPost.content) {
-            const post: BlogPost = {
-                ...newPost,
-                id: Date.now().toString(),
-                date: new Date().toISOString().split("T")[0],
-            };
-            setPosts([post, ...posts]);
-            setNewPost({
-                title: "",
-                excerpt: "",
-                content: "",
-                readTime: "",
-                tags: [],
-                category: "",
-            });
-            setIsAddingPost(false);
-        }
-    };
+    const filteredPosts =
+        activeCategory === "All" ? blogPosts : blogPosts.filter((post) => post.category === activeCategory);
 
-    // const handleDeletePost = (id: string) => {
-    //     setPosts(posts.filter((p) => p.id !== id));
-    // };
+    useEffect(() => {
+        if (!selectedPost) return;
 
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-        });
-    };
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        closeButtonRef.current?.focus();
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") setSelectedPost(null);
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            document.body.style.overflow = previousOverflow;
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [selectedPost]);
 
     return (
-        <section id="blog" className="py-20">
+        <section id="blog" aria-labelledby="blog-heading" className="sm:py-4">
             <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
+                    transition={{ duration: 0.5 }}
                     viewport={{ once: true }}
-                    className="mb-10 text-center"
+                    className="max-w-3xl mx-auto mb-2 text-center"
                 >
-                    <h2 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl dark:text-white">My Blog</h2>
-                    <p className="max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-400">
-                        Sharing insights, tips, and reflections from my development journey
+                    <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 text-sm font-medium text-blue-700 border border-blue-200 rounded-full bg-blue-50 dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-blue-300">
+                        <Code2 className="w-4 h-4" aria-hidden="true" />
+                        Notes from my development journey
+                    </div>
+
+                    <h2
+                        id="blog-heading"
+                        className="mb-4 text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl"
+                    >
+                        My Blog
+                    </h2>
+
+                    <p className="max-w-2xl mx-auto text-base leading-7 text-gray-600 dark:text-gray-400 sm:text-lg">
+                        Practical lessons, project breakdowns, and reflections on building web applications and growing
+                        as a developer.
                     </p>
                 </motion.div>
 
-                {/* <div className="flex justify-center mb-8">
-                    <button
-                        onClick={() => setIsAddingPost(true)}
-                        className="inline-flex items-center px-6 py-3 text-white transition-colors duration-200 bg-blue-600 rounded-lg hover:bg-blue-700"
-                    >
-                        <Plus className="w-4 h-4 mr-2" />
-                        Write New Post
-                    </button>
-                </div> */}
+                <div className="flex flex-wrap justify-center gap-2 mb-10" aria-label="Filter blog posts by category">
+                    {categories.map((category) => {
+                        const isActive = activeCategory === category;
 
-                {isAddingPost && (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="p-6 mb-8 bg-white border border-gray-200 shadow-lg dark:bg-gray-800 rounded-xl dark:border-gray-700"
-                    >
-                        <h3 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
-                            Write New Blog Post
-                        </h3>
-                        <div className="space-y-4">
-                            <input
-                                type="text"
-                                placeholder="Blog Post Title"
-                                value={newPost.title}
-                                onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
-                                className="w-full px-4 py-2 text-gray-900 bg-white border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                            />
-                            <textarea
-                                placeholder="Excerpt (brief summary)"
-                                value={newPost.excerpt}
-                                onChange={(e) => setNewPost({ ...newPost, excerpt: e.target.value })}
-                                rows={3}
-                                className="w-full px-4 py-2 text-gray-900 bg-white border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                            />
-                            <textarea
-                                placeholder="Full content"
-                                value={newPost.content}
-                                onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
-                                rows={8}
-                                className="w-full px-4 py-2 text-gray-900 bg-white border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                            />
-                            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                                <select
-                                    value={newPost.category}
-                                    onChange={(e) => setNewPost({ ...newPost, category: e.target.value })}
-                                    className="px-4 py-2 text-gray-900 bg-white border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                                >
-                                    <option value="">Select Category</option>
-                                    {categories.map((cat) => (
-                                        <option key={cat} value={cat}>
-                                            {cat}
-                                        </option>
-                                    ))}
-                                </select>
-                                <input
-                                    type="text"
-                                    placeholder="Read time (e.g., 5 min read)"
-                                    value={newPost.readTime}
-                                    onChange={(e) => setNewPost({ ...newPost, readTime: e.target.value })}
-                                    className="px-4 py-2 text-gray-900 bg-white border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Tags (comma separated)"
-                                    onChange={(e) =>
-                                        setNewPost({ ...newPost, tags: e.target.value.split(",").map((s) => s.trim()) })
-                                    }
-                                    className="px-4 py-2 text-gray-900 bg-white border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                                />
-                            </div>
-                        </div>
-                        <div className="flex justify-end mt-6 space-x-3">
+                        return (
                             <button
-                                onClick={() => setIsAddingPost(false)}
-                                className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                                key={category}
+                                type="button"
+                                onClick={() => setActiveCategory(category)}
+                                aria-pressed={isActive}
+                                className={`rounded-full px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-950 ${
+                                    isActive
+                                        ? "bg-blue-600 text-white shadow-sm"
+                                        : "border border-gray-200 bg-white text-gray-700 hover:border-blue-300 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-blue-700 dark:hover:text-blue-300"
+                                }`}
                             >
-                                Cancel
+                                {category}
                             </button>
-                            <button
-                                onClick={handleAddPost}
-                                className="px-6 py-2 text-white transition-colors duration-200 bg-blue-600 rounded-lg hover:bg-blue-700"
-                            >
-                                Publish Post
-                            </button>
-                        </div>
-                    </motion.div>
-                )}
+                        );
+                    })}
+                </div>
 
-                <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    {posts.map((post, index) => (
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {filteredPosts.map((post, index) => (
                         <motion.article
                             key={post.id}
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: 18 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: index * 0.1 }}
-                            viewport={{ once: true }}
-                            whileHover={{ y: -5 }}
-                            className="overflow-hidden transition-all duration-300 bg-white border border-gray-200 shadow-lg cursor-pointer dark:bg-gray-800 rounded-xl hover:shadow-2xl dark:border-gray-700"
-                            onClick={() => setSelectedPost(post)}
+                            transition={{ duration: 0.4, delay: index * 0.07 }}
+                            viewport={{ once: true, amount: 0.15 }}
+                            whileHover={{ y: -4 }}
+                            className="flex flex-col h-full overflow-hidden transition-shadow bg-white border border-gray-200 shadow-sm rounded-2xl hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
                         >
-                            <div className="p-6">
-                                <div className="flex items-center justify-between mb-4">
-                                    <span className="px-3 py-1 text-xs font-medium text-blue-700 bg-blue-100 rounded-full dark:bg-blue-900/30 dark:text-blue-300">
+                            <div className="flex flex-col flex-1 p-6">
+                                <div className="flex items-center justify-between gap-3 mb-4">
+                                    <span className="px-3 py-1 text-xs font-semibold text-blue-700 rounded-full bg-blue-50 dark:bg-blue-950/50 dark:text-blue-300">
                                         {post.category}
                                     </span>
-                                    {/* <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleDeletePost(post.id);
-                                        }}
-                                        className="p-1 text-red-500 transition-colors duration-200 rounded hover:bg-red-100 dark:hover:bg-red-900/30"
-                                    >
-                                        <Trash2 className="w-4 h-4" />
-                                    </button> */}
+                                    <span className="flex items-center gap-1 text-xs text-gray-500 shrink-0 dark:text-gray-400">
+                                        <Clock3 className="h-3.5 w-3.5" aria-hidden="true" />
+                                        {post.readTime}
+                                    </span>
                                 </div>
 
-                                <h3 className="mb-3 text-xl font-bold leading-tight text-gray-900 dark:text-white">
+                                <h3 className="mb-3 text-xl font-bold leading-snug text-gray-900 dark:text-white">
                                     {post.title}
                                 </h3>
 
-                                <p className="mb-4 leading-relaxed text-gray-600 dark:text-gray-400">{post.excerpt}</p>
+                                <p className="flex-1 mb-5 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                                    {post.excerpt}
+                                </p>
 
-                                <div className="flex items-center mb-4 text-sm text-gray-500 dark:text-gray-400">
-                                    <Calendar className="w-4 h-4 mr-1" />
-                                    <span className="mr-4">{formatDate(post.date)}</span>
-                                    <Clock className="w-4 h-4 mr-1" />
-                                    <span>{post.readTime}</span>
-                                </div>
-
-                                <div className="flex flex-wrap gap-2">
+                                <div className="flex flex-wrap gap-2 mb-5">
                                     {post.tags.map((tag) => (
                                         <span
                                             key={tag}
-                                            className="inline-flex items-center px-2 py-1 text-xs text-gray-700 bg-gray-100 rounded dark:bg-gray-700 dark:text-gray-300"
+                                            className="inline-flex items-center gap-1 px-2 py-1 text-xs text-gray-700 bg-gray-100 rounded-md dark:bg-gray-800 dark:text-gray-300"
                                         >
-                                            <Tag className="w-3 h-3 mr-1" />
+                                            <Tag className="w-3 h-3" aria-hidden="true" />
                                             {tag}
                                         </span>
                                     ))}
+                                </div>
+
+                                <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
+                                    <span className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+                                        <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
+                                        {formatDate(post.date)}
+                                    </span>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setSelectedPost(post)}
+                                        className="inline-flex items-center gap-1.5 rounded-md text-sm font-semibold text-blue-600 transition-colors hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+                                        aria-label={`Read article: ${post.title}`}
+                                    >
+                                        Read article
+                                        <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                                    </button>
                                 </div>
                             </div>
                         </motion.article>
                     ))}
                 </div>
 
-                {/* Blog Post Modal */}
+                {filteredPosts.length === 0 && (
+                    <p className="py-12 text-center text-gray-600 dark:text-gray-400">
+                        No articles found in this category.
+                    </p>
+                )}
+            </div>
+
+            <AnimatePresence>
                 {selectedPost && (
                     <motion.div
+                        className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/60 backdrop-blur-sm sm:p-6"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
-                        onClick={() => setSelectedPost(null)}
+                        exit={{ opacity: 0 }}
+                        onMouseDown={(event) => {
+                            if (event.target === event.currentTarget) {
+                                setSelectedPost(null);
+                            }
+                        }}
                     >
-                        <motion.div
-                            initial={{ scale: 0.95 }}
-                            animate={{ scale: 1 }}
-                            className="bg-white dark:bg-gray-800 rounded-xl max-w-4xl max-h-[90vh] overflow-y-auto p-8"
-                            onClick={(e) => e.stopPropagation()}
+                        <motion.section
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="blog-dialog-title"
+                            aria-describedby="blog-dialog-excerpt"
+                            initial={{ opacity: 0, y: 16, scale: 0.98 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                            transition={{ duration: 0.2 }}
+                            className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl dark:bg-gray-900 sm:p-9"
                         >
-                            <div className="flex items-center justify-between mb-6">
-                                <span className="px-3 py-1 text-sm font-medium text-blue-700 bg-blue-100 rounded-full dark:bg-blue-900/30 dark:text-blue-300">
+                            <div className="flex items-start justify-between gap-4 mb-6">
+                                <span className="px-3 py-1 text-xs font-semibold text-blue-700 rounded-full bg-blue-50 dark:bg-blue-950/50 dark:text-blue-300">
                                     {selectedPost.category}
                                 </span>
+
                                 <button
+                                    ref={closeButtonRef}
+                                    type="button"
                                     onClick={() => setSelectedPost(null)}
-                                    className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                                    aria-label="Close article"
+                                    className="p-2 text-gray-500 transition-colors rounded-full hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:hover:bg-gray-800 dark:hover:text-white"
                                 >
-                                    ✕
+                                    <X className="w-5 h-5" aria-hidden="true" />
                                 </button>
                             </div>
 
-                            <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
+                            <h2
+                                id="blog-dialog-title"
+                                className="mb-4 text-2xl font-bold leading-tight text-gray-900 dark:text-white sm:text-3xl"
+                            >
                                 {selectedPost.title}
-                            </h1>
+                            </h2>
 
-                            <div className="flex items-center mb-6 text-sm text-gray-500 dark:text-gray-400">
-                                <Calendar className="w-4 h-4 mr-1" />
-                                <span className="mr-4">{formatDate(selectedPost.date)}</span>
-                                <Clock className="w-4 h-4 mr-1" />
-                                <span>{selectedPost.readTime}</span>
+                            <p
+                                id="blog-dialog-excerpt"
+                                className="mb-5 text-base leading-7 text-gray-600 dark:text-gray-300"
+                            >
+                                {selectedPost.excerpt}
+                            </p>
+
+                            <div className="flex flex-wrap items-center pb-5 text-sm text-gray-500 border-b border-gray-200 mb-7 gap-x-5 gap-y-2 dark:border-gray-800 dark:text-gray-400">
+                                <span className="inline-flex items-center gap-2">
+                                    <CalendarDays className="w-4 h-4" aria-hidden="true" />
+                                    {formatDate(selectedPost.date)}
+                                </span>
+                                <span className="inline-flex items-center gap-2">
+                                    <Clock3 className="w-4 h-4" aria-hidden="true" />
+                                    {selectedPost.readTime}
+                                </span>
                             </div>
 
-                            <div className="mb-6 prose dark:prose-invert max-w-none">
-                                <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-400">
-                                    {selectedPost.content}
-                                </p>
+                            <div className="space-y-5 text-base leading-8 text-gray-700 dark:text-gray-300">
+                                {selectedPost.content.map((paragraph, index) => (
+                                    <p key={`${selectedPost.id}-${index}`}>{paragraph}</p>
+                                ))}
                             </div>
 
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-wrap gap-2 pt-6 mt-8 border-t border-gray-200 dark:border-gray-800">
                                 {selectedPost.tags.map((tag) => (
                                     <span
                                         key={tag}
-                                        className="inline-flex items-center px-3 py-1 text-sm text-gray-700 bg-gray-100 rounded dark:bg-gray-700 dark:text-gray-300"
+                                        className="rounded-md bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-700 dark:bg-gray-800 dark:text-gray-300"
                                     >
-                                        <Tag className="w-3 h-3 mr-1" />
                                         {tag}
                                     </span>
                                 ))}
                             </div>
-                        </motion.div>
+                        </motion.section>
                     </motion.div>
                 )}
-            </div>
+            </AnimatePresence>
         </section>
     );
 };
+
+export default Blog;
