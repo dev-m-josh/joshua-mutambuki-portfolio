@@ -3,7 +3,35 @@ import { motion } from "framer-motion";
 import { Calendar, MapPin, ExternalLink } from "lucide-react";
 
 export const Resume: React.FC = () => {
+
     const experiences = [
+        {
+            title: "Full Stack Developer",
+            company: "My-Cyber",
+            period: "2026 – Present",
+            location: "Personal Project",
+            description: [
+                "Developed a full-stack business management platform for cyber cafés and small businesses",
+                "Implemented product and service management, inventory tracking, pricing, and profit calculations",
+                "Integrated Cloudinary for product and service image uploads",
+                "Implemented authentication and role-based access control",
+                "Used Redis-backed rate limiting to help prevent abuse of password-reset and account setup email endpoints",
+                "Built RESTful APIs using Node.js, Express.js, PostgreSQL, and Drizzle ORM",
+                "Used Docker to run containerized application services",
+            ],
+            technologies: [
+                "React",
+                "TypeScript",
+                "Tailwind CSS",
+                "Node.js",
+                "Express.js",
+                "PostgreSQL",
+                "Drizzle ORM",
+                "Redis",
+                "Cloudinary",
+                "Docker",
+            ],
+        },
         {
             title: "Full Stack Developer",
             company: "Hotel Management System",
@@ -19,7 +47,7 @@ export const Resume: React.FC = () => {
         {
             title: "Full Stack Developer",
             company: "E-Commerce Platform",
-            period: "2024 - 2025",
+            period: "2025",
             location: "Personal Project",
             description: [
                 "Developed a complete e-commerce solution",
@@ -45,10 +73,34 @@ export const Resume: React.FC = () => {
     ];
 
     const skills = [
-        { category: "Frontend", items: ["JavaScript", "TypeScript", "React", "Tailwind CSS", "HTML5", "CSS3"] },
-        { category: "Backend", items: ["Node.js", "Express.js", "REST APIs", "Authentication", "JWT"] },
-        { category: "Database", items: ["PostgreSQL", "SQL Server", "Database Design"] },
-        { category: "Tools & Others", items: ["Git", "GitHub", "Vercel", "Postman", "VS Code", "Responsive Design"] },
+        {
+            category: "Frontend",
+            items: ["JavaScript", "TypeScript", "React", "Tailwind CSS", "HTML5", "CSS3", "Responsive Design"],
+        },
+        {
+            category: "Backend",
+            items: [
+                "Node.js",
+                "Express.js",
+                "REST APIs",
+                "Authentication",
+                "Role-Based Access Control (RBAC)",
+                "Cookie-Based Authentication",
+                "JWT",
+            ],
+        },
+        {
+            category: "Database & Storage",
+            items: ["PostgreSQL", "SQL Server", "SQL", "Database Design", "Redis"],
+        },
+        {
+            category: "Tools & DevOps",
+            items: ["Git", "GitHub", "Docker", "Vercel", "Render", "Postman", "VS Code"],
+        },
+        {
+            category: "Cloud & Services",
+            items: ["Cloudinary", "Axios"],
+        },
     ];
 
     return (
