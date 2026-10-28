@@ -17,7 +17,7 @@ interface Project {
 export const Projects: React.FC = () => {
     const [projects, setProjects] = useState<Project[]>([
         {
-            id: "3",
+            id: "1",
             title: "My-Cyber",
             description:
                 "Full-stack business management platform for cyber cafés and small businesses, featuring product and service management, inventory tracking, pricing, profit calculations, image uploads, and role-based access control.",
@@ -40,10 +40,10 @@ export const Projects: React.FC = () => {
         },
 
         {
-            id: "1",
+            id: "2",
             title: "Hotel Management System",
             description:
-                "A full-stack CRUD bHotel Management System with user authentication and role-based permissions.",
+                "A full-stack CRUD hotel management system with user authentication and role-based permissions.",
             stack: ["React", "Node.js", "PostgreSQL", "Express", "Tailwind CSS"],
             githubUrl: "https://github.com/dev-m-josh/final-project",
             liveUrl: "https://final-project-plum-five.vercel.app/",
@@ -104,14 +104,6 @@ export const Projects: React.FC = () => {
             setIsAddingProject(false);
         }
     };
-
-    // const handleDeleteProject = (id: string) => {
-    //     setProjects(projects.filter((p) => p.id !== id));
-    // };
-
-    // const handleImageChange = (projectId: string, imageDataUrl: string | null) => {
-    //     setProjects(projects.map((p) => (p.id === projectId ? { ...p, image: imageDataUrl } : p)));
-    // };
 
     return (
         <section id="projects" className="py-10 bg-gray-50 dark:bg-gray-800/50">
